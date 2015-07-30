@@ -53,10 +53,14 @@ public:
     virtual bool isYuvLayer() const;
     virtual void setPosition(const sp<const DisplayDevice>& hw,
                              HWComposer::HWCLayerInterface& layer, const State& state);
+    virtual void setAcquiredFenceIfBlit(int &fenceFd,
+                             HWComposer::HWCLayerInterface& layer);
+    virtual bool canAllowGPUForProtected() const;
 
 protected:
     bool mDebugLogs;
     bool isDebug() { return mDebugLogs; }
+    bool mIsGPUAllowedForProtected;
 };
 
 }; // namespace android

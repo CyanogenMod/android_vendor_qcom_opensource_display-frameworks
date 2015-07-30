@@ -29,6 +29,7 @@
 #include "../ExSurfaceFlinger.h"
 #include "../ExLayer.h"
 #include "ExHWComposer.h"
+#include <exhwcomposer_defs.h>
 
 namespace android {
 
@@ -60,6 +61,11 @@ ExHWComposer::ExHWComposer(const sp<SurfaceFlinger>& flinger,
 }
 
 ExHWComposer::~ExHWComposer() {
+}
+
+bool ExHWComposer::isCompositionTypeBlit(const int32_t compType) const
+{
+    return (compType == HWC_BLIT);
 }
 
 }; // namespace android
