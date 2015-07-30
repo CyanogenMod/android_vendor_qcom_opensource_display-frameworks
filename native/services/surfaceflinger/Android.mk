@@ -14,7 +14,12 @@ LOCAL_CFLAGS                    += -DHAS_CONTEXT_PRIORITY
 LOCAL_C_INCLUDES                += $(TARGET_OUT_HEADERS)
 LOCAL_C_INCLUDES                += $(call project-path-for,qcom-display)/libgralloc \
                                    $(call project-path-for,qcom-display)/libqdutils \
-                                   frameworks/native/services/surfaceflinger
+                                   frameworks/native/services/surfaceflinger \
+                                   vendor/qcom/opensource/display-frameworks/include
+
+ifeq ($(TARGET_USES_QCOM_BSP), true)
+    LOCAL_CFLAGS += -DQTI_BSP
+endif
 
 LOCAL_SHARED_LIBRARIES          := libsurfaceflinger libui libgui libqdutils \
                                    libbinder libutils libcutils \
