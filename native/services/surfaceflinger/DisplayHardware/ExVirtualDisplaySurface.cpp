@@ -45,7 +45,10 @@ ExVirtualDisplaySurface::ExVirtualDisplaySurface(HWComposer& hwc, int32_t dispId
         const String8& name,
         bool secure)
 :   VirtualDisplaySurface(hwc, dispId, sink, bqProducer, bqConsumer, name),
-    mSecure(secure) {
+   mSecure(secure) {
+   sink->query(NATIVE_WINDOW_CONSUMER_USAGE_BITS, &mSinkUsage);
+   mSinkUsage |= GRALLOC_USAGE_HW_COMPOSER;
+   setOutputUsage(mSinkUsage);
 }
 
 status_t ExVirtualDisplaySurface::beginFrame(bool mustRecompose) {
@@ -69,8 +72,8 @@ status_t ExVirtualDisplaySurface::beginFrame(bool mustRecompose) {
 }
 
 /* Helper to update the output usage when the display is secure */
-void ExVirtualDisplaySurface::setOutputUsage(uint32_t flag) {
-    mOutputUsage = flag;
+void ExVirtualDisplaySurface::setOutputUsage(uint32_t /*flag*/) {
+    mOutputUsage = mSinkUsage;
     if (mSecure && (mOutputUsage & GRALLOC_USAGE_HW_VIDEO_ENCODER)) {
         /* TODO: Currently, the framework can only say whether the display
          * and its subsequent session are secure or not. However, there is
