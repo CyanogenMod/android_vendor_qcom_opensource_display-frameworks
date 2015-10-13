@@ -37,6 +37,7 @@
 #include <gralloc_priv.h>
 
 #include "ExLayer.h"
+#include <exhwcomposer_defs.h>
 
 namespace android {
 
@@ -79,6 +80,11 @@ ExLayer::ExLayer(SurfaceFlinger* flinger, const sp<Client>& client,
     }
 
     ALOGD_IF(isDebug(),"Creating custom Layer %s",__FUNCTION__);
+
+    if ((property_get("persist.gralloc.cp.level3", property, NULL) > 0) &&
+           (atoi(property) == 1)) {
+        mIsGPUAllowedForProtected = true;
+    }
 }
 
 ExLayer::~ExLayer() {
@@ -160,6 +166,28 @@ void ExLayer::setPosition(const sp<const DisplayDevice>& hw,
         layer.setFrame(r);
     }
     return;
+}
+
+void ExLayer::setAcquiredFenceIfBlit(int &fenceFd,
+                                     HWComposer::HWCLayerInterface& layer) {
+    if (layer.getCompositionType() == HWC_BLIT) {
+        sp<Fence> fence = mSurfaceFlingerConsumer->getCurrentFence();
+        if (fence->isValid()) {
+            fenceFd = fence->dup();
+            if (fenceFd == -1) {
+                ALOGW("%s: failed to dup layer fence, skipping sync: %d",
+                      __FUNCTION__,errno);
+            }
+        }
+    }
+}
+
+bool ExLayer::canAllowGPUForProtected() const {
+    if(isProtected()) {
+        return mIsGPUAllowedForProtected;
+    } else {
+        return false;
+    }
 }
 
 }; // namespace android

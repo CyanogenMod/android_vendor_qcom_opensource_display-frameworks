@@ -48,6 +48,7 @@ protected:
     inline bool isVDSEnabled() const { return mVDSEnabled; };
     bool mDebugLogs;
     bool isDebug() { return mDebugLogs; }
+    bool isCompositionTypeBlit(const int32_t compType) const;
 };
 
 

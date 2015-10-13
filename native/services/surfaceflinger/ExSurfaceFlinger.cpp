@@ -29,6 +29,7 @@
 #include "ExSurfaceFlinger.h"
 #include "ExLayer.h"
 #include <cutils/properties.h>
+#include <exhwcomposer_defs.h>
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
 
 namespace android {
@@ -244,6 +245,18 @@ void ExSurfaceFlinger::updateVisibleRegionsDirty() {
      */
     if(isExtendedMode()) {
         mVisibleRegionsDirty = true;
+    }
+}
+
+void ExSurfaceFlinger::drawWormHoleIfRequired(HWComposer::LayerListIterator& cur,
+        const HWComposer::LayerListIterator& end,
+        const sp<const DisplayDevice>& hw,
+        const Region& region) {
+    if (cur != end) {
+        if (cur->getCompositionType() != HWC_BLIT)
+            drawWormhole(hw, region);
+    } else {
+           drawWormhole(hw, region);
     }
 }
 
