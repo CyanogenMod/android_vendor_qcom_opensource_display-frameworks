@@ -109,12 +109,10 @@ bool ExLayer::isIntOnly() const {
     if (activeBuffer != 0) {
         ANativeWindowBuffer* buffer = activeBuffer->getNativeBuffer();
         if(buffer) {
-            // TODO: uncomment this after adding PRIV_FLAG_INTERNAL_ONLY in gralloc
-            /* private_handle_t* hnd = static_cast<private_handle_t*>
-                   (const_cast<native_handle_t*>(buffer->handle)); */
+             private_handle_t* hnd = static_cast<private_handle_t*>
+                   (const_cast<native_handle_t*>(buffer->handle));
             /* return true if layer is INT_ONLY */
-            /* return (hnd && (hnd->flags & private_handle_t::PRIV_FLAGS_EXTERNAL_ONLY));*/
-            return false;
+            return (hnd && (hnd->flags & private_handle_t::PRIV_FLAGS_INTERNAL_ONLY));
         }
     }
     return false;
