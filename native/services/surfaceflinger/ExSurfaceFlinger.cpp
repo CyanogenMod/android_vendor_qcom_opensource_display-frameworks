@@ -221,21 +221,10 @@ void ExSurfaceFlinger::setOrientationEventControl(bool& freezeSurfacePresent,
     HWComposer::LayerListIterator cur = hwc.begin(id);
 
     if(freezeSurfacePresent) {
-        /* If freezeSurfacePresent, set ANIMATING flag */
-        //TODO: Need to call this
-        //cur->setAnimating(true);
-    } else {
-        const KeyedVector<wp<IBinder>, DisplayDeviceState>&
-                draw(mDrawingState.displays);
-        size_t dc = draw.size();
-        for (size_t i=0 ; i<dc ; i++) {
-            if (draw[i].isMainDisplay()) {
-                /* Pass the current orientation to HWC */
-                /*hwc.eventControl(HWC_DISPLAY_PRIMARY,
-                                 SurfaceFlinger::EVENT_ORIENTATION,
-                                 uint32_t(draw[i].orientation));*/
-            }
-        }
+        /* If freezeSurfacePresent, set ANIMATING flag
+         * which is used to support disable animation on external
+         */
+        cur->setAnimating(true);
     }
 }
 

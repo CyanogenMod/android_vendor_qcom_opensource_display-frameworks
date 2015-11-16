@@ -32,9 +32,6 @@
 #include <stdint.h>
 #include <sys/cdefs.h>
 
-#include <hardware/gralloc.h>
-#include <hardware/hardware.h>
-#include <cutils/native_handle.h>
 #include <hardware/hwcomposer.h>
 
 __BEGIN_DECLS
@@ -46,18 +43,6 @@ enum {
     HWC_EVENT_ORIENTATION             = HWC_EVENT_VSYNC + 1
 };
 
-/* Extended display attributes returned by getDisplayAttributes() */
-enum {
-    /* Indicates if the display is secure
-     * For HDMI/WFD if the sink supports HDCP, it will be true
-     * Primary panel is always considered secure
-     *
-     */
-    HWC_DISPLAY_SECURE                = HWC_DISPLAY_DPI_Y + 1,
-
-    /* Framebuffer format*/
-    HWC_DISPLAY_FBFORMAT              = HWC_DISPLAY_SECURE + 1
-};
 
 /* Extended hwc_layer_t::compositionType values */
 enum {
