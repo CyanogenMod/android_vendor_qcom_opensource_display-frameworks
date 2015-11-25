@@ -81,6 +81,7 @@ ExLayer::ExLayer(SurfaceFlinger* flinger, const sp<Client>& client,
 
     ALOGD_IF(isDebug(),"Creating custom Layer %s",__FUNCTION__);
 
+    mIsGPUAllowedForProtected = false;
     if ((property_get("persist.gralloc.cp.level3", property, NULL) > 0) &&
            (atoi(property) == 1)) {
         mIsGPUAllowedForProtected = true;
